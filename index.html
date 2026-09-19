@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>恋するオルゴール - 限定特典ページ（ベルが鳴る前に）</title>
+    <style>
+        :root {
+            /* 夕焼けのホームをイメージしたグラデーション */
+            --bg-top: #ff7e5f;
+            --bg-bottom: #2b1d3d;
+            --glass-bg: rgba(0, 0, 0, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --accent-gold: #ffb75e;
+            --accent-gold-light: #ffd27f;
+            --text-main: #fdfdfd;
+            --text-sub: #fce3ce;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            line-height: 1.8;
+            letter-spacing: 0.08em;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* オープニングアニメーション */
+        #opening-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 1.5s ease, transform 1.5s ease;
+        }
+
+        #opening-overlay.fade-out {
+            opacity: 0;
+            transform: scale(1.05);
+            pointer-events: none;
+        }
+
+        .opening-box {
+            text-align: center;
+            color: var(--text-main);
+        }
+
+        /* ベルの揺れるアニメーション */
+        .bell-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: ring 2s ease-in-out infinite;
+            text-shadow: 0 0 15px rgba(255, 183, 94, 0.8);
+        }
+
+        @keyframes ring {
+            0% { transform: rotate(0deg); }
+            10% { transform: rotate(15deg); }
+            20% { transform: rotate(-10deg); }
+            30% { transform: rotate(10deg); }
+            40% { transform: rotate(-5deg); }
+            50% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 40px 20px 80px 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 2.0s ease 0.3s, transform 2.0s ease 0.3s;
+        }
+
+        .wrapper.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 30px 20px;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        h2::before, h2::after {
+            content: '✧';
+            font-size: 1rem;
+            margin: 0 10px;
+            color: var(--text-main);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+        }
+
+        .jacket-area {
+            position: relative;
+            width: 100%;
+            margin: 0 auto 20px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: #1a1a1a;
+        }
+
+        .jacket-area img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .main-title {
+            font-size: 1.8rem;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 183, 94, 0.8), 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .catchphrase {
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            white-space: pre-wrap;
+            line-height: 1.6;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            font-style: italic;
+        }
+
+        .btn-main {
+            display: inline-block;
+            width: 90%;
+            max-width: 280px;
+            padding: 14px 0;
+            background: linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 100%);
+            color: #2b1d3d;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            border-radius: 40px;
+            box-shadow: 0 6px 15px rgba(255, 183, 94, 0.4);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            letter-spacing: 0.1em;
+        }
+
+        .btn-main:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 183, 94, 0.6);
+        }
+
+        .coming-soon {
+            font-size: 1.1rem;
+            color: var(--text-sub);
+            font-style: italic;
+            letter-spacing: 0.15em;
+            padding: 30px 0;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .message-text {
+            font-size: 0.95rem;
+            text-align: left;
+            padding: 10px;
+            white-space: pre-wrap;
+            color: var(--text-main);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .message-signature {
+            text-align: right;
+            margin-top: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--accent-gold);
+            line-height: 1.6;
+            padding-right: 10px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .secret-block {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .secret-title {
+            font-size: 1rem;
+            color: #ffffff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .board-img-wrap {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            margin-bottom: 20px;
+            background-color: #1a1a1a;
+        }
+
+        .board-img-wrap img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            opacity: 0.6;
+            margin-top: 20px;
+            letter-spacing: 0.1em;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particles"></canvas>
+
+    <!-- オープニング画面 -->
+    <div id="opening-overlay">
+        <div class="opening-box">
+            <div class="bell-icon">🔔</div>
+            <p style="font-size: 0.9rem; letter-spacing: 0.25em; margin-bottom: 15px; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+                Special Gift for You
+            </p>
+            <div style="font-size: 1.2rem; font-weight: 300; opacity: 0.8; letter-spacing: 0.1em;">Loading...</div>
+        </div>
+    </div>
+
+    <div class="wrapper" id="main-wrapper">
+        
+        <!-- メインタイトル：恋するオルゴール -->
+        <section id="sec-top">
+            <div class="jacket-area">
+                <!-- 保存したジャケット画像のファイル名を指定してください -->
+                <img id="lp-jacket" src="./bell_jacket.jpg" alt="恋するオルゴール ベルが鳴る前に Jacket">
+            </div>
+            <h1 class="main-title">恋するオルゴール</h1>
+            <p class="catchphrase">あと五分だけ早ければ——&#10;きっと、また会えたのに…</p>
+        </section>
+
+        <!-- 楽曲リンク -->
+        <section id="sec-music">
+            <h2>Music</h2>
+            <div id="music-content">
+                <a href="#" target="_blank" class="btn-main">『ベルが鳴る前に』を聴く</a>
+            </div>
+        </section>
+
+        <!-- アンサーソング セクション -->
+        <section id="sec-answer">
+            <h2>Answer Song</h2>
+            <p style="font-size: 0.9rem; margin-bottom: 15px; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">「ベルが鳴る前に」と対になるもう一つの物語</p>
+            <div id="answer-content">
+                <a href="#" target="_blank" class="btn-main" style="background: linear-gradient(135deg, #a8caba 0%, #5d9b84 100%); color:#fff; border-color: rgba(255,255,255,0.3);">アンサーソングを聴く</a>
+            </div>
+        </section>
+
+        <!-- メッセージ -->
+        <section id="sec-message">
+            <h2>Message</h2>
+            <p class="message-text">この度は、サードシングル「ベルが鳴る前に」をお手に取っていただき、本当にありがとうございます！
+
+今回の舞台は夕暮れの駅のホーム。
+あと少しのすれ違いや、伝えられなかった切ない想いを込めて歌いました。
+
+ジャケットの伝言板や駅の情景と一緒に、80年代のあたたかくも切ない空気感を感じていただけたら嬉しいです。
+対になるアンサーソングも用意しているので、ぜひ2つの視点から物語を楽しんでくださいね。
+
+これからも私たち「恋するオルゴール」の応援をよろしくお願いします！</p>
+            <div class="message-signature">恋するオルゴール<br>早坂恵美<br>宮本直美</div>
+        </section>
+
+        <!-- スペシャルコンテンツ -->
+        <section id="sec-secret">
+            <h2>Special Contents</h2>
+            
+            <div class="secret-block">
+                <div class="secret-title">『ベルが鳴る前に』制作秘話</div>
+                <div class="secret-content-body">
+                    <div class="board-img-wrap">
+                        <div class="coming-soon">Coming Soon...</div>
+                    </div>
+                    <a href="#" target="_blank" class="btn-main">制作秘話を見る</a>
+                </div>
+            </div>
+
+            <hr style="border: none; border-top: 2px dotted rgba(255, 255, 255, 0.2); margin-bottom: 30px;">
+
+            <!-- メンバーから手書きスペシャルメッセージボード -->
+            <div class="secret-block">
+                <div class="secret-title">伝言板スペシャルメッセージ</div>
+                <div class="coming-soon">Coming Soon...</div>
+            </div>
+        </section>
+
+        <footer>
+            &copy; 2026 Premium Music Card. All Rights Reserved.
+        </footer>
+    </div>
+
+    <script>
+        // オープニングアニメーション
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(() => {
+                const overlay = document.getElementById("opening-overlay");
+                const wrapper = document.getElementById("main-wrapper");
+                overlay.classList.add("fade-out");
+                wrapper.classList.add("visible");
+            }, 1800);
+        });
+
+        // 背景の光の粒エフェクト（夕暮れの空気感）
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const maxParticles = 30;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * canvas.height;
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 100;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedY = Math.random() * 0.5 + 0.1;
+                this.speedX = (Math.random() - 0.5) * 0.3;
+                this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                if (this.y < -10) {
+                    this.reset();
+                    this.y = canvas.height + 10;
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 210, 127, ${this.alpha})`;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < maxParticles; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
